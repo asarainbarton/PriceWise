@@ -14,20 +14,28 @@ struct ContentView: View
         var weight: Double
     }
     
-    func findBetterDeal(item1: Item, item2: Item) -> Item? {
+    func findBetterDeal(item1: Item, item2: Item) -> Item?
+    {
         let item1PricePerWeight = item1.price / item1.weight
         let item2PricePerWeight = item2.price / item2.weight
-        if item1PricePerWeight == item2PricePerWeight {
+        if item1PricePerWeight == item2PricePerWeight
+        {
             return nil
-        } else {
+        }
+        else
+        {
             return item1PricePerWeight < item2PricePerWeight ? item1 : item2
         }
     }
 
-    var body: some View {
-        VStack {
-            HStack {
-                VStack(alignment: .leading) {
+    var body: some View
+    {
+        VStack
+        {
+            HStack
+            {
+                VStack(alignment: .leading)
+                {
                     Text("Item 1")
                     TextField("Price", text: $item1Price)
                         .textFieldStyle(RoundedBorderTextFieldStyle())
@@ -37,7 +45,8 @@ struct ContentView: View
                         .keyboardType(.decimalPad)
                 }
                 Spacer()
-                VStack(alignment: .leading) {
+                VStack(alignment: .leading)
+                {
                     Text("Item 2")
                     TextField("Price", text: $item2Price)
                         .textFieldStyle(RoundedBorderTextFieldStyle())
@@ -47,12 +56,14 @@ struct ContentView: View
                         .keyboardType(.decimalPad)
                 }
             }
-            Button(action: {
+            Button(action:
+            {
                 guard let item1Price = Double(item1Price),
                       let item1Weight = Double(item1Weight),
                       let item2Price = Double(item2Price),
                       let item2Weight = Double(item2Weight)
-                else {
+                else
+                {
                     message = "Please enter valid numbers for both items"
                     return
                 }
@@ -61,13 +72,15 @@ struct ContentView: View
                 let item2 = Item(price: item2Price, weight: item2Weight)
                 
                 guard let betterDeal = findBetterDeal(item1: item1, item2: item2)
-                else {
+                else
+                {
                     message = "The two items have the same value per weight"
                     return
                 }
                 
                 message = "\(betterDeal == item1 ? "Item 1" : "Item 2") is a better deal"
-            }) {
+            })
+            {
                 Text("Compare Items")
                     .fontWeight(.semibold)
                     .font(.system(size: 18))
@@ -87,9 +100,17 @@ struct ContentView: View
     }
 }
 
-struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
+struct ContentView_Previews: PreviewProvider
+{
+    static var previews: some View
+    {
         ContentView()
     }
 }
 
+
+struct Previews_ContentView_Previews: PreviewProvider {
+    static var previews: some View {
+        /*@START_MENU_TOKEN@*/Text("Hello, World!")/*@END_MENU_TOKEN@*/
+    }
+}

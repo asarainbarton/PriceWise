@@ -8,9 +8,12 @@
 import SwiftUI
 
 @main
-struct PriceWiseApp: App {
-    var body: some Scene {
-        WindowGroup {
+struct PriceWiseApp: App
+{
+    var body: some Scene
+    {
+        WindowGroup
+        {
             ContentView()
         }
     }

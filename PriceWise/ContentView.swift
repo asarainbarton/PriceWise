@@ -1,4 +1,5 @@
 import SwiftUI
+import UIKit
 
 struct ContentView: View
 {
@@ -26,6 +27,13 @@ struct ContentView: View
         {
             return item1PricePerWeight < item2PricePerWeight ? item1 : item2
         }
+    }
+
+    func vibrateDevice() 
+    {
+        let feedbackGenerator = UINotificationFeedbackGenerator()
+        feedbackGenerator.prepare()
+        feedbackGenerator.notificationOccurred(.success)
     }
 
     var body: some View
@@ -79,6 +87,9 @@ struct ContentView: View
                 }
                 
                 message = "\(betterDeal == item1 ? "Item 1" : "Item 2") is a better deal"
+
+                vibrateDevice()
+                UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
             })
             {
                 Text("Compare Items")
@@ -94,9 +105,13 @@ struct ContentView: View
                     )
             }
             .padding()
+
             Text(message)
         }
         .padding()
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(Color(red: 0.70, green: 0.2, blue: 0.4)) // Set the background color to red
+        .edgesIgnoringSafeArea(.all)
     }
 }
 
@@ -108,9 +123,3 @@ struct ContentView_Previews: PreviewProvider
     }
 }
 
-
-struct Previews_ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        /*@START_MENU_TOKEN@*/Text("Hello, World!")/*@END_MENU_TOKEN@*/
-    }
-}

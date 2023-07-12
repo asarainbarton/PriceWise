@@ -83,6 +83,10 @@ struct ContentView: View
                 else
                 {
                     message = "The two items have the same value per weight"
+
+                    vibrateDevice()
+                    UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+                    
                     return
                 }
                 

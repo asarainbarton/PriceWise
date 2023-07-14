@@ -9,35 +9,12 @@ struct ContentView: View
     @State private var item2Weight = ""
     @State private var message = ""
     
-    struct Item: Equatable
-    {
-        var price: Double
-        var weight: Double
-    }
-    
-    func findBetterDeal(item1: Item, item2: Item) -> Item?
-    {
-        let item1PricePerWeight = item1.price / item1.weight
-        let item2PricePerWeight = item2.price / item2.weight
-        if item1PricePerWeight == item2PricePerWeight
-        {
-            return nil
-        }
-        else
-        {
-            return item1PricePerWeight < item2PricePerWeight ? item1 : item2
-        }
-    }
-
-    func vibrateDevice() 
-    {
-        let feedbackGenerator = UINotificationFeedbackGenerator()
-        feedbackGenerator.prepare()
-        feedbackGenerator.notificationOccurred(.success)
-    }
-
     var body: some View
     {
+        let SHADOW_RADIUS: CGFloat = 10
+        let FONT_SIZE: CGFloat = 20
+        let COMPARE_BUTTON_SIZE: CGFloat = 40
+        
         VStack
         {
             HStack
@@ -45,6 +22,8 @@ struct ContentView: View
                 VStack(alignment: .leading)
                 {
                     Text("Item 1")
+                        .bold()
+                        .font(.system(size: FONT_SIZE))
                     TextField("Price", text: $item1Price)
                         .textFieldStyle(RoundedBorderTextFieldStyle())
                         .keyboardType(.decimalPad)
@@ -52,10 +31,13 @@ struct ContentView: View
                         .textFieldStyle(RoundedBorderTextFieldStyle())
                         .keyboardType(.decimalPad)
                 }
+                
                 Spacer()
                 VStack(alignment: .leading)
                 {
                     Text("Item 2")
+                        .bold()
+                        .font(.system(size: FONT_SIZE))
                     TextField("Price", text: $item2Price)
                         .textFieldStyle(RoundedBorderTextFieldStyle())
                         .keyboardType(.decimalPad)
@@ -64,52 +46,16 @@ struct ContentView: View
                         .keyboardType(.decimalPad)
                 }
             }
-            Button(action:
-            {
-                guard let item1Price = Double(item1Price),
-                      let item1Weight = Double(item1Weight),
-                      let item2Price = Double(item2Price),
-                      let item2Weight = Double(item2Weight)
-                else
-                {
-                    message = "Please enter valid numbers for both items"
-                    return
-                }
-                
-                let item1 = Item(price: item1Price, weight: item1Weight)
-                let item2 = Item(price: item2Price, weight: item2Weight)
-                
-                guard let betterDeal = findBetterDeal(item1: item1, item2: item2)
-                else
-                {
-                    message = "The two items have the same value per weight"
-
-                    vibrateDevice()
-                    UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
-                    
-                    return
-                }
-                
-                message = "\(betterDeal == item1 ? "Item 1" : "Item 2") is a better deal"
-
-                vibrateDevice()
-                UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
-            })
-            {
-                Text("Compare Items")
-                    .fontWeight(.semibold)
-                    .font(.system(size: 18))
-                    .foregroundColor(.white)
-                    .padding()
-                    .background(Color.blue)
-                    .cornerRadius(10)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 10)
-                            .stroke(Color.blue, lineWidth: 2)
-                    )
-            }
-            .padding()
-
+            
+            Text("")
+            Text("")
+            
+            // Button responsible for clearing all values within the four text fields
+            ClearValButton(item1Price: $item1Price, item2Price: $item2Price, item1Weight: $item1Weight, item2Weight: $item2Weight, message: $message, textColor: Color(.red), backgroundColor: Color(.black), shadowRadius: SHADOW_RADIUS)
+            
+            // Button responsible for comparing the two items
+            CompareItemsButton(item1Price: $item1Price, item2Price: $item2Price, item1Weight: $item1Weight, item2Weight: $item2Weight, message: $message, textColor: Color(.white), backgroundColor: Color(.blue), shadowRadius: SHADOW_RADIUS, buttonSize: COMPARE_BUTTON_SIZE)
+            
             Text(message)
         }
         .padding()
